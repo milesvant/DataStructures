@@ -18,9 +18,8 @@ void *push(struct Stack *myStack, void *data) {
     return NULL;
   }
   (myStack->top)++;
-  int val = myStack->top;
-  *(myStack->data + val) = data;
-  return (myStack->data + myStack->top);
+  *(myStack->data + myStack->top) = data;
+  return *(myStack->data + myStack->top);
 }
 
 /*
@@ -31,7 +30,7 @@ void *pop(struct Stack *myStack) {
   if(stackempty(myStack)) { // Underflow
     return NULL;
   }
-  void *poppedData = (myStack->data + myStack->top);
+  void *poppedData = *(myStack->data + myStack->top);
   (myStack->top)--;
   return poppedData;
 }
