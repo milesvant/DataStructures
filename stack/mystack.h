@@ -22,10 +22,6 @@ static inline struct Stack *initstack(int size) {
     return NULL;
   }
   stackPointer->max_size = size;
-  int i;
-  for(i=0; i < size; ++i) { // Might not be neccesary
-     *(stackPointer->data + i) = NULL;
-  }
   return stackPointer;
 }
 
