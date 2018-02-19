@@ -1,5 +1,6 @@
 #ifndef _MYSTACK_H_
 #define _MYSTACK_H_
+#define MAX_STACK_SIZE 100
 
 struct Stack {
   int max_size;
@@ -8,20 +9,27 @@ struct Stack {
 };
 
 /*
- * Initialize an empty stack that holds at most size elements.
+ * Initialize an empty stack that holds at most *size elements.
+ * If size is the null pointer, then max_size defaults to MAX_STACK_SIZE
  * Returns pointer to the stack or NULL upon failure
  */
-static inline struct Stack *initstack(int size) {
+static inline struct Stack *initstack(int *size) {
   struct Stack *stackPointer = malloc(sizeof(struct Stack));
   if(stackPointer == NULL) {
     return NULL;
   }
   stackPointer->top = -1;
-  stackPointer->data = malloc(sizeof(void *) * size);
+  if(size == NULL) {
+    stackPointer->data = malloc(sizeof(void *) * MAX_STACK_SIZE);
+    stackPointer->max_size = MAX_STACK_SIZE;
+  }
+  else {
+    stackPointer->data = malloc(sizeof(void *) * *size);
+    stackPointer->max_size = *size;
+  }
   if(stackPointer->data == NULL){
     return NULL;
   }
-  stackPointer->max_size = size;
   return stackPointer;
 }
 

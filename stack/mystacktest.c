@@ -9,13 +9,13 @@ static void die(const char *message)
 }
 
 /*
- * Simple tests to confirm functionality of mystack
+ * Simple tests to test functionality of mystack
  */
 int main()
 {
   double a[] = {1.0, 2.0, 3.0, 4.0, 5.0};
   int n = sizeof(a)/sizeof(a[0]);
-  struct Stack *testStack = initstack(n); // Tests initStack
+  struct Stack *testStack = initstack(&n); // Tests initStack
   for(int i=0; i<n; ++i) { // Test push
 	if(push(testStack, (void *)(a+i)) == NULL)
 		die("push failed");
