@@ -27,7 +27,7 @@ void *popFront(struct Singlylinkedlist *list) {
 struct Node *search(struct Singlylinkedlist *list, void *data) {
   struct Node *start = list->head;
   while(startnode) {
-    if(*startnode == *data) {
+    if(startnode->data == *data) {
       return startnode;
     }
     startnode = startnode->next;
@@ -37,4 +37,18 @@ struct Node *search(struct Singlylinkedlist *list, void *data) {
 
 void popAll(struct Singlylinkedlist *list) {
   while(popFront(list));
+}
+
+void deleteNode(struct Singlylinkedlist *list, void *data) {
+  struct *myNode = list->head;
+  struct *prev = NULL;
+  while(myNode) {
+    if(myNode->data == data) {
+      prev->next = myNode->next;
+      free(myNode);
+      break;
+    }
+    prev = myNode;
+    myNode = myNode->next;
+  }
 }

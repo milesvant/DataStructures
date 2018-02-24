@@ -5,7 +5,7 @@ struct DNode {
   void *data;
   struct DNode *next;
   struct DNode *prev;
-}
+};
 
 struct Doublylinkedlist {
   struct DNode *head;

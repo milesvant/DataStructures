@@ -36,4 +36,10 @@ struct Node *search(struct Singlylinkedlist *list, void *data);
  */
 void popAll(struct Singlylinkedlist *list);
 
+/*
+ * searches for the first node with data equal to data, then deletes it
+ * and returns it. Returns NULL if no Node containing data is found
+ */
+void *deleteNode(struct Singlylinkedlist *list, void *data);
+
 #endif
