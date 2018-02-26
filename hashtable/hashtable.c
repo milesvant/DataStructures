@@ -1,23 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "hastable.h"
-#include "singlylinkedlist.h"
+#include "hashtable.h"
+#include "../singlylinkedlist/singlylinkedlist.h"
 
-void *chainedinsert(struct *HashTable mytable, void *key, void *value) {
+void *chainedinsert(struct HashTable *mytable, void *key, void *value) {
   int hashval = mytable->hash(key);
-  if((mytable->buckets + hashval)) == NULL) {
+  if((mytable->buckets + hashval) == NULL) {
     initList(mytable->buckets + hashval);
   }
   struct KVPair mypair = { key, value };
   return (mytable->buckets + hashval)->head;
 }
 
-void *chainedsearch(struct *HashTable mytable, void *key) {
+void *chainedsearch(struct HashTable *mytable, void *key) {
   int hashval = mytable->hash(key);
   if(mytable->buckets + hashval == NULL) {
     return NULL;
   }
-  struct Singlylinkedlist bucket = *(mytable->buckets + hashval);
+  struct singlylinkedlist bucket = *(mytable->buckets + hashval);
   while(bucket->head) {
     if(*(KVPair *)(bucket.head).key == key) {
       return *(KVPair *)(bucket.head).value;
@@ -27,12 +27,12 @@ void *chainedsearch(struct *HashTable mytable, void *key) {
   return NULL;
 }
 
-void *chaineddelete(struct *HashTable mytable, void *key) {
+void *chaineddelete(struct HashTable *mytable, void *key) {
   int hashval = mytable->hash(key);
   if((mytable->buckets + hashval) == NULL) {
     return NULL;
   }
-  struct Singlylinkedlist bucket = *(mytable->buckets + hashval);
+  struct singlylinkedlist bucket = *(mytable->buckets + hashval);
   while(bucket->head) {
     if(*(KVPair *)(bucket.head).key == key) {
       struct KVPair *kvpointer = *(KVPair *)(bucket.head)

@@ -4,7 +4,7 @@
 struct Node {
   void *data;
   struct Node *next;
-}
+};
 
 struct Singlylinkedlist {
   struct Node *head;
@@ -29,7 +29,7 @@ void *popFront(struct Singlylinkedlist *list);
  * searches *list for a Node containing data, then returns it
  * returns NULL if no Node containing data is found
  */
-struct Node *search(struct Singlylinkedlist *list, void *data);
+struct Node *search(struct Singlylinkedlist *list, void *data, int (*compar)(void *, void *));
 
 /*
  * removes and frees all Nodes in *list
@@ -40,6 +40,6 @@ void popAll(struct Singlylinkedlist *list);
  * searches for the first node with data equal to data, then deletes it
  * and returns it. Returns NULL if no Node containing data is found
  */
-void *deleteNode(struct Singlylinkedlist *list, void *data);
+void deleteNode(struct Singlylinkedlist *list, void *data, int (*compar)(void *, void *));
 
 #endif
