@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "singlylinkedlist.h"
 
-struct Node *insertFront(struct Singlylinkedlist *list, void *data) {
+struct Node *insertFront(struct singlylinkedlist *list, void *data) {
   struct Node *newNode = malloc(sizeof(struct Node));
   if(newNode == NULL) {
     return NULL;
@@ -13,19 +13,19 @@ struct Node *insertFront(struct Singlylinkedlist *list, void *data) {
   return newNode;
 }
 
-void *popFront(struct Singlylinkedlist *list) {
+void *popFront(struct singlylinkedlist *list) {
   if(list->head == NULL) {
     return NULL;
   }
-  void *returndata = list->head->data;
-  struct Node *newhead = list->head;
-  list->head = newhead;
-  free(newhead);
-  return returndata;
+  struct Node *headPointer = list->head;
+	list->head = headPointer->next;
+	void *returnData = headPointer->data;
+	free(headPointer);
+	return returnData;
 }
 
-struct Node *search(struct Singlylinkedlist *list, void *data, 
-		int (*compar)(void *, void *)) {
+struct Node *search(struct singlylinkedlist *list, void *data,
+		int (*compar)(const void *, const void *)) {
   struct Node *start = list->head;
   while(start) {
     if(compar(start->data, data)) {
@@ -36,21 +36,29 @@ struct Node *search(struct Singlylinkedlist *list, void *data,
   return NULL;
 }
 
-void popAll(struct Singlylinkedlist *list) {
+void popAll(struct singlylinkedlist *list) {
   while(popFront(list));
 }
 
-void *deleteNode(struct Singlylinkedlist *list, void *data, 
-		int (*compar)(void *, void *)) {
-  struct Node *myNode = list->head;
-  struct Node *prev = NULL;
-  while(myNode) {
-    if(compar(myNode->data, data)) {
-      prev->next = myNode->next;
-      free(myNode);
-      break;
-    }
-    prev = myNode;
-    myNode = myNode->next;
-  }
+/*
+ * Adds a Node containing data to list after prev (assumed to be in list), in
+ * returns the newly created Node
+ */
+struct Node *addafter(struct singlylinkedlist *list, struct Node *prev, void *data) {
+  struct Node *newNode = malloc(sizeof(struct Node));
+	if(newNode == NULL) {
+		return NULL;
+	}
+	newNode->data = data;
+
+	if(prev == NULL) {
+		newNode->next = list->head;
+		list->head = newNode;
+		return newNode;
+	}
+
+	newNode->next = prev->next;
+	prev->next = newNode;
+
+	return newNode;
 }

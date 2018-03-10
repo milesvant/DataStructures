@@ -6,11 +6,11 @@ struct Node {
   struct Node *next;
 };
 
-struct Singlylinkedlist {
+struct singlylinkedlist {
   struct Node *head;
 };
 
-static inline void initList(struct Singlylinkedlist *list) {
+static inline void initList(struct singlylinkedlist *list) {
   list->head = NULL;
 }
 
@@ -18,28 +18,30 @@ static inline void initList(struct Singlylinkedlist *list) {
  * inserts a Node containing data to the front of *list
  * returns the Node created if succesful and NULL on failure
  */
-struct Node *insertFront(struct Singlylinkedlist *list, void *data);
+struct Node *insertFront(struct singlylinkedlist *list, void *data);
 
 /*
  * removes and frees the head of *list and returns its data
  */
-void *popFront(struct Singlylinkedlist *list);
+void *popFront(struct singlylinkedlist *list);
 
 /*
  * searches *list for a Node containing data, then returns it
  * returns NULL if no Node containing data is found
  */
-struct Node *search(struct Singlylinkedlist *list, void *data, int (*compar)(void *, void *));
+struct Node *search(struct singlylinkedlist *list, void *data,
+    int (*)(const void *, const void *));
 
 /*
  * removes and frees all Nodes in *list
  */
-void popAll(struct Singlylinkedlist *list);
+void popAll(struct singlylinkedlist *list);
+
 
 /*
- * searches for the first node with data equal to data, then deletes it
- * and returns it. Returns NULL if no Node containing data is found
+ * Adds a DNode containing data to list after prev (assumed to be in list), in
+ * returns the newly created DNode
  */
-void deleteNode(struct Singlylinkedlist *list, void *data, int (*compar)(void *, void *));
+struct Node *addafter(struct singlylinkedlist *list, struct Node *prev, void *data);
 
 #endif

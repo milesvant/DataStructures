@@ -6,15 +6,18 @@
  * inserts a Node containing data to the front of *list
  * returns the Node created if succesful and NULL on failure
  */
-struct DNode *insertFront(struct Doublylinkedlist *list, void *data) {
+struct DNode *insertFront(struct doublylinkedlist *list, void *data) {
   struct DNode *newnode = malloc(sizeof(struct DNode));
   if(newnode == NULL) {
     return NULL;
   }
+
   newnode->data = data;
   newnode->prev = NULL;
   newnode->next = list->head;
-  list->head->prev = newnode;
+  if(list->head) {
+    list->head->prev = newnode;
+  }
   list->head = newnode;
   return newnode;
 }
@@ -22,12 +25,14 @@ struct DNode *insertFront(struct Doublylinkedlist *list, void *data) {
 /*
  * removes and frees the head of *list and returns its data
  */
-void *popFront(struct Doublylinkedlist *list) {
-  if(list->head = NULL) {
+void *popFront(struct doublylinkedlist *list) {
+  if(list->head == NULL) {
     return NULL;
   }
-  list->head->next->prev = NULL;
-  struct DNode copy = list->head;
+  if(list->head->next) {
+    list->head->next->prev = NULL;
+  }
+  struct DNode *copy = list->head;
   list->head = list->head->next;
   void *copydata = copy->data;
   free(copy);
@@ -38,13 +43,14 @@ void *popFront(struct Doublylinkedlist *list) {
  * searches *list for a Node containing data, then returns it
  * returns NULL if no Node containing data is found
  */
-struct DNode *search(struct Doublylinkedlist *list, void *data) {
+struct DNode *search(struct doublylinkedlist *list, void *data,
+    int (*compar)(const void *, const void *)) {
   struct DNode *start = list->head;
-  while(startnode) {
-    if(*startnode == *data) {
-      return startnode;
+  while(start) {
+    if((*compar)(start->data, data)) {
+      return start;
     }
-    startnode = startnode->next;
+    start = start->next;
   }
   return NULL;
 }
@@ -52,17 +58,21 @@ struct DNode *search(struct Doublylinkedlist *list, void *data) {
 /*
  * removes and frees all Nodes in *list
  */
-void popAll(struct Doublylinkedlist *list) {
+void popAll(struct doublylinkedlist *list) {
   while(popFront(list));
 }
 
-struct DNode addafter(struct Doublylinkedlist *list, struct DNode *prev,
+/*
+ * Adds a DNode containing data to list after prev (assumed to be in list), in
+ * returns the newly created DNode
+ */
+struct DNode *addAfter(struct doublylinkedlist *list, struct DNode *prev,
   void *data) {
     struct DNode *newnode = malloc(sizeof(struct DNode));
     if(newnode == NULL) {
       return NULL;
     }
-    newNode->data = data;
+    newnode->data = data;
 
     if(prev == NULL) {
 		 newnode->next = list->head;
@@ -73,8 +83,8 @@ struct DNode addafter(struct Doublylinkedlist *list, struct DNode *prev,
 	  }
 
 	  newnode->next = prev->next;
-    newnode->next->prev = newnode;
+    if(newnode->next)
+      newnode->next->prev = newnode;
 	  prev->next = newnode;
-    prev->
 	  return newnode;
 }

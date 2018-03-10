@@ -4,15 +4,19 @@ CFLAGS = -g -Wall $(INCLUDES)
 LDFLAGS = -g
 LDLIBS =
 
+slltest: slltest.o singlylinkedlist.o
+
 libsinglylinkedlist.a: singlylinkedlist.o
-	ar rc libhashtable.a hashtable.o
-	ranlib libhashtable.a
+	ar rc libsinglylinkedlist.a singlylinkedlist.o
+	ranlib libsinglylinkedlist.a
 
 singlylinkedlist.o: singlylinkedlist.h
 
+slltest.o: singlylinkedlist.h
+
 .PHONY: clean
 clean:
-	rm -f *.o a.out core libsinglylinkedlist.a
+	rm -f *.o a.out core slltest libsinglylinkedlist.a
 
 .PHONY: all
-all: clean libsinglylinkedlist.a
+all: clean slltest libsinglylinkedlist.a
