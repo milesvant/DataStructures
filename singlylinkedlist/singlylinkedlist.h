@@ -44,4 +44,10 @@ void popAll(struct singlylinkedlist *list);
  */
 struct Node *addafter(struct singlylinkedlist *list, struct Node *prev, void *data);
 
+/*
+ * Returns a string representation of the singlylinkedlist at address list, using
+ * an inputted function to convert data into strings
+ */
+char *sllToString(const struct singlylinkedlist *list, char *(*)(void *));
+
 #endif

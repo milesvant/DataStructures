@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "singlylinkedlist.h"
 
 struct Node *insertFront(struct singlylinkedlist *list, void *data) {
@@ -61,4 +62,20 @@ struct Node *addafter(struct singlylinkedlist *list, struct Node *prev, void *da
 	prev->next = newNode;
 
 	return newNode;
+}
+
+char *sllToString(const struct singlylinkedlist *list,
+    char *(*dataString)(void *)) {
+  struct Node *myNode = list->head;
+  char *result = "";
+  while(myNode) {
+    result = strcat(result, "[");
+    result = strcat(result, dataString(myNode->data));
+    result = strcat(result, "]");
+    if(myNode->next) {
+      result = strcat(result, " -> ");
+    }
+    myNode = myNode->next;
+  }
+  return result;
 }

@@ -88,3 +88,19 @@ struct DNode *addAfter(struct doublylinkedlist *list, struct DNode *prev,
 	  prev->next = newnode;
 	  return newnode;
 }
+
+char *sllToString(const struct doublylinkedlist *list,
+    char *(*dataString)(void *)) {
+  struct Node *myNode = list->head;
+  char *result = "";
+  while(myNode) {
+    result = strcat(result, "[");
+    result = strcat(result, dataString(myNode->data));
+    result = strcat(result, "]");
+    if(myNode->next) {
+      result = strcat(result, " <-> ");
+    }
+    myNode = myNode->next;
+  }
+  return result;
+}

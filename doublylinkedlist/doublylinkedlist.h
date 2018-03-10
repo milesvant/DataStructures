@@ -44,4 +44,11 @@ void popAll(struct doublylinkedlist *list);
  */
 struct DNode *addAfter(struct doublylinkedlist *list, struct DNode *prev, void *data);
 
+/*
+ * Returns a string representation of the singlylinkedlist at address list, using
+ * an inputted function to convert data into strings
+ */
+char *sllToString(const struct doublylinkedlist *list,
+    char *(*dataString)(void *));
+
 #endif
