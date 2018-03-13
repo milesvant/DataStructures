@@ -16,7 +16,7 @@ slltest.o: singlylinkedlist.h
 
 .PHONY: clean
 clean:
-	rm -f *.o a.out core slltest libsinglylinkedlist.a
+	rm -f *.o a.out core slltest
 
 .PHONY: all
 all: clean slltest libsinglylinkedlist.a
