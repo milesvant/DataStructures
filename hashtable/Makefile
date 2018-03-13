@@ -1,21 +1,21 @@
-CC = gcc
+CC = clang
 CFLAGS = -g -Wall
 LDFLAGS = -g
-LIBB = ../singlylinkedlist
-LIBINCLUDE = ../singlylinkedlist
+LIBB = ../SinglyLinkedList
+LIBINCLUDE = ../SinglyLinkedList
 CFLAGS += -I$(LIBINCLUDE)
 LDFLAGS += -L$(LIBB)
 LDFLAGS += -lsinglylinkedlist
 
 hashtabletest: libhashtable.a
 
-libhashtable.a: hashtable.o
-	ar rc libhashtable.a hashtable.o
+libhashtable.a: HashTable.o
+	ar rc libhashtable.a HashTable.o
 	ranlib libhashtable.a
 
 hashtabletest.o: hashtable.h
 
-hashtable.o:
+HashTable.o:
 
 .PHONY: clean
 clean:

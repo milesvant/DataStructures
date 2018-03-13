@@ -1,18 +1,18 @@
-CC = gcc
+CC = clang
 INCLUDES =
 CFLAGS = -g -Wall $(INCLUDES)
 LDFLAGS = -g
 LDLIBS =
 
-slltest: slltest.o singlylinkedlist.o
+slltest: slltest.o SinglyLinkedList.o
 
-libsinglylinkedlist.a: singlylinkedlist.o
-	ar rc libsinglylinkedlist.a singlylinkedlist.o
+libsinglylinkedlist.a: SinglyLinkedList.o
+	ar rc libsinglylinkedlist.a SinglyLinkedList.o
 	ranlib libsinglylinkedlist.a
 
-singlylinkedlist.o: singlylinkedlist.h
+SinglyLinkedList.o: SinglyLinkedList.h
 
-slltest.o: singlylinkedlist.h
+slltest.o: SinglyLinkedList.h
 
 .PHONY: clean
 clean:

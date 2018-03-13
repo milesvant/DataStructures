@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "hashtable.h"
+#include "HashTable.h"
 #include "../SinglyLinkedList/SinglyLinkedList.h"
 
 void *chainedinsert(struct HashTable *mytable, void *key, void *value,

@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "doublylinkedlist.h"
+#include "DoublyLinkedList.h"
 
 /*
  * inserts a Node containing data to the front of *list
  * returns the Node created if succesful and NULL on failure
  */
-struct DNode *insertFront(struct doublylinkedlist *list, void *data) {
+struct DNode *insertFront(struct DoublyLinkedList *list, void *data) {
   struct DNode *newnode = malloc(sizeof(struct DNode));
   if(newnode == NULL) {
     return NULL;
@@ -25,7 +25,7 @@ struct DNode *insertFront(struct doublylinkedlist *list, void *data) {
 /*
  * removes and frees the head of *list and returns its data
  */
-void *popFront(struct doublylinkedlist *list) {
+void *popFront(struct DoublyLinkedList *list) {
   if(list->head == NULL) {
     return NULL;
   }
@@ -43,7 +43,7 @@ void *popFront(struct doublylinkedlist *list) {
  * searches *list for a Node containing data, then returns it
  * returns NULL if no Node containing data is found
  */
-struct DNode *search(struct doublylinkedlist *list, void *data,
+struct DNode *search(struct DoublyLinkedList *list, void *data,
     int (*compar)(const void *, const void *)) {
   struct DNode *start = list->head;
   while(start) {
@@ -58,7 +58,7 @@ struct DNode *search(struct doublylinkedlist *list, void *data,
 /*
  * removes and frees all Nodes in *list
  */
-void popAll(struct doublylinkedlist *list) {
+void popAll(struct DoublyLinkedList *list) {
   while(popFront(list));
 }
 
@@ -66,7 +66,7 @@ void popAll(struct doublylinkedlist *list) {
  * Adds a DNode containing data to list after prev (assumed to be in list), in
  * returns the newly created DNode
  */
-struct DNode *addAfter(struct doublylinkedlist *list, struct DNode *prev,
+struct DNode *addAfter(struct DoublyLinkedList *list, struct DNode *prev,
   void *data) {
     struct DNode *newnode = malloc(sizeof(struct DNode));
     if(newnode == NULL) {
@@ -87,20 +87,4 @@ struct DNode *addAfter(struct doublylinkedlist *list, struct DNode *prev,
       newnode->next->prev = newnode;
 	  prev->next = newnode;
 	  return newnode;
-}
-
-char *sllToString(const struct doublylinkedlist *list,
-    char *(*dataString)(void *)) {
-  struct Node *myNode = list->head;
-  char *result = "";
-  while(myNode) {
-    result = strcat(result, "[");
-    result = strcat(result, dataString(myNode->data));
-    result = strcat(result, "]");
-    if(myNode->next) {
-      result = strcat(result, " <-> ");
-    }
-    myNode = myNode->next;
-  }
-  return result;
 }

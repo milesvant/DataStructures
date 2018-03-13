@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "hashtable.c"
+#include "HashTable.h"
 
 int compareints(const void *x, const void *y) {
   return (*(int *)x == *(int *)y);

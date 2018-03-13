@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "doublylinkedlist.h"
+#include "DoublyLinkedList.h"
 
 void die(const char *message)
 {
@@ -12,7 +12,7 @@ int sameInt(const void *a, const void *b) {
 	return (*(int *)a == *(int *)b);
 }
 
-void printList(struct doublylinkedlist *mylist) {
+void printList(struct DoublyLinkedList *mylist) {
   struct DNode *travDNode = mylist->head;
   while(travDNode) {
     printf("%d\n", *(int *)(travDNode->data));
@@ -22,7 +22,7 @@ void printList(struct doublylinkedlist *mylist) {
 
 int main()
 {
-  struct doublylinkedlist mytestlist;
+  struct DoublyLinkedList mytestlist;
   initList(&mytestlist);
 
   int a[] =  { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
