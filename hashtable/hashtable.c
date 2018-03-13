@@ -3,40 +3,50 @@
 #include "hashtable.h"
 #include "../singlylinkedlist/singlylinkedlist.h"
 
+int hash(const void *val) {
+  int k = *(int *)val;
+  return ((k * (k + 3)) % NUM_BUCKETS);
+}
+
 void *chainedinsert(struct HashTable *mytable, void *key, void *value) {
-  int hashval = mytable->hash(key);
-  if((mytable->buckets + hashval) == NULL) {
+  int hashval = hash(key);
+  if(((mytable->buckets) + hashval) == NULL) {
     initList(mytable->buckets + hashval);
   }
   struct KVPair mypair = { key, value };
+  insertFront(mytable->buckets, &mypair);
   return (mytable->buckets + hashval)->head;
 }
 
-void *chainedsearch(struct HashTable *mytable, void *key) {
-  int hashval = mytable->hash(key);
+void *chainedsearch(struct HashTable *mytable, void *key,
+    int (*compar)(const void *, const void *)) {
+  int hashval = hash(key);
   if(mytable->buckets + hashval == NULL) {
     return NULL;
   }
-  struct singlylinkedlist bucket = *(mytable->buckets + hashval);
-  while(bucket->head) {
-    if(*(KVPair *)(bucket.head).key == key) {
-      return *(KVPair *)(bucket.head).value;
+
+  struct singlylinkedlist *bucket = (mytable->buckets + hashval);
+  struct Node *start = bucket->head;
+  while(start) {
+    if(compar(start->data, key)) {
+      return start;
     }
-    bucket->head++;
+    start = start->next;
   }
   return NULL;
 }
 
-void *chaineddelete(struct HashTable *mytable, void *key) {
-  int hashval = mytable->hash(key);
+void *chaineddelete(struct HashTable *mytable, void *key,
+    int (*compar)(const void *, const void *)) {
+  int hashval = hash(key);
   if((mytable->buckets + hashval) == NULL) {
     return NULL;
   }
-  struct singlylinkedlist bucket = *(mytable->buckets + hashval);
+  struct singlylinkedlist *bucket = (mytable->buckets + hashval);
   while(bucket->head) {
-    if(*(KVPair *)(bucket.head).key == key) {
-      struct KVPair *kvpointer = *(KVPair *)(bucket.head)
-      deleteNode(bucket, *kvpointer);
+    if(((struct KVPair *)(bucket->head->data))->key == key) {
+      struct KVPair *kvpointer = (struct KVPair *)(bucket->head->data);
+      // HAVE TO DELETE HERE
       return kvpointer;
     }
     bucket->head++;

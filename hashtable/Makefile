@@ -1,8 +1,11 @@
 CC = gcc
-INCLUDES = -I ../singlylinkedlist/
-CFLAGS = -g -Wall $(INCLUDES)
-LDFLAGS = -g -L../singlylinkedlist/
-LDLIBS =
+CFLAGS = -g -Wall
+LDFLAGS = -g
+LIBB = ../singlylinkedlist
+LIBINCLUDE = ../singlylinkedlist
+CFLAGS += -I$(LIBINCLUDE)
+LDFLAGS += -L$(LIBB)
+LDFLAGS += -lsinglylinkedlist
 
 hashtabletest: libhashtable.a
 
@@ -10,9 +13,9 @@ libhashtable.a: hashtable.o
 	ar rc libhashtable.a hashtable.o
 	ranlib libhashtable.a
 
-hashtabletest.o: hashtable.h ../singlylinkedlist/singlylinkedlist.h
+hashtabletest.o: hashtable.h
 
-hashtable.o: ../singlylinkedlist/libsinglylinkedlist.a
+hashtable.o:
 
 .PHONY: clean
 clean:

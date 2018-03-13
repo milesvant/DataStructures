@@ -9,19 +9,20 @@ struct KVPair {
 };
 
 struct HashTable {
-  int (hash)(void *);
   struct singlylinkedlist *buckets;
 };
 
-static inline void initHashTable(struct HashTable *table, int (*hash)(void *)) {
+static inline void initHashTable(struct HashTable *table) {
+  table = malloc(sizeof(struct HashTable));
   table->buckets = malloc(NUM_BUCKETS * sizeof(struct singlylinkedlist));
-  table->hash = *hash;
 }
 
 void *chainedinsert(struct HashTable *mytable, void *key, void *value);
 
-void *chainedsearch(struct HashTable *mytable, void *key);
+void *chainedsearch(struct HashTable *mytable, void *key,
+  int (*)(const void *, const void *));
 
-void *chaineddelete(struct HashTable *mytable, void *key);
+void *chaineddelete(struct HashTable *mytable, void *key,
+  int (*)(const void *, const void *));
 
 #endif
