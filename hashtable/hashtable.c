@@ -1,15 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "hashtable.h"
-#include "../singlylinkedlist/singlylinkedlist.h"
+#include "../SinglyLinkedList/SinglyLinkedList.h"
 
-int hash(const void *val) {
-  int k = *(int *)val;
-  return ((k * (k + 3)) % NUM_BUCKETS);
-}
-
-void *chainedinsert(struct HashTable *mytable, void *key, void *value) {
-  int hashval = hash(key);
+void *chainedinsert(struct HashTable *mytable, void *key, void *value,
+    int (*compar)(const void *, const void *)) {
+  if(chainedsearch(mytable, key, compar)) // If key already exists
+    return NULL;
+  int hashval = (*(mytable->hash))(key);
   struct KVPair *mypair = malloc(sizeof(struct KVPair));
   mypair->key = key;
   mypair->value = value;
@@ -20,8 +18,8 @@ void *chainedinsert(struct HashTable *mytable, void *key, void *value) {
 void *chainedsearch(struct HashTable *mytable, void *key,
     int (*compar)(const void *, const void *)) {
   // Find bucket
-  int hashval = hash(key);
-  struct singlylinkedlist *bucket = (mytable->buckets + hashval);
+  int hashval = (*(mytable->hash))(key);
+  struct SinglyLinkedList *bucket = (mytable->buckets + hashval);
   struct Node *start = bucket->head;
   // Search for key within bucket
   while(start) {
@@ -36,8 +34,8 @@ void *chainedsearch(struct HashTable *mytable, void *key,
 
 void *chaineddelete(struct HashTable *mytable, void *key,
     int (*compar)(const void *, const void *)) {
-  int hashval = hash(key);
-  struct singlylinkedlist *bucket = (mytable->buckets + hashval);
+  int hashval = (*(mytable->hash))(key);
+  struct SinglyLinkedList *bucket = (mytable->buckets + hashval);
   struct Node *prevNode = NULL;
   struct Node *start = bucket->head;
   // Search for key within bucket
@@ -60,8 +58,7 @@ void *chaineddelete(struct HashTable *mytable, void *key,
 }
 
 void deleteall(struct HashTable *mytable) {
-  struct singlylinkedlist *bucket = mytable->buckets;
-
+  struct SinglyLinkedList *bucket = mytable->buckets;
   for(int i=0; i < NUM_BUCKETS; ++i) {
     while(bucket[i].head) {
       free(popFront(bucket + i));

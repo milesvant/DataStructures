@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "singlylinkedlist.h"
+#include "SinglyLinkedList.h"
 
-struct Node *insertFront(struct singlylinkedlist *list, void *data) {
+struct Node *insertFront(struct SinglyLinkedList *list, void *data) {
   struct Node *newNode = malloc(sizeof(struct Node));
   if(newNode == NULL) {
     return NULL;
@@ -14,7 +14,7 @@ struct Node *insertFront(struct singlylinkedlist *list, void *data) {
   return newNode;
 }
 
-void *popFront(struct singlylinkedlist *list) {
+void *popFront(struct SinglyLinkedList *list) {
   if(list->head == NULL) {
     return NULL;
   }
@@ -25,7 +25,7 @@ void *popFront(struct singlylinkedlist *list) {
 	return returnData;
 }
 
-struct Node *search(struct singlylinkedlist *list, void *data,
+struct Node *search(struct SinglyLinkedList *list, void *data,
 		int (*compar)(const void *, const void *)) {
   struct Node *start = list->head;
   while(start) {
@@ -37,7 +37,7 @@ struct Node *search(struct singlylinkedlist *list, void *data,
   return NULL;
 }
 
-void popAll(struct singlylinkedlist *list) {
+void popAll(struct SinglyLinkedList *list) {
   while(popFront(list));
 }
 
@@ -45,7 +45,7 @@ void popAll(struct singlylinkedlist *list) {
  * Adds a Node containing data to list after prev (assumed to be in list), in
  * returns the newly created Node
  */
-struct Node *addafter(struct singlylinkedlist *list, struct Node *prev, void *data) {
+struct Node *addafter(struct SinglyLinkedList *list, struct Node *prev, void *data) {
   struct Node *newNode = malloc(sizeof(struct Node));
 	if(newNode == NULL) {
 		return NULL;
@@ -62,20 +62,4 @@ struct Node *addafter(struct singlylinkedlist *list, struct Node *prev, void *da
 	prev->next = newNode;
 
 	return newNode;
-}
-
-char *sllToString(const struct singlylinkedlist *list,
-    char *(*dataString)(void *)) {
-  struct Node *myNode = list->head;
-  char *result = "";
-  while(myNode) {
-    result = strcat(result, "[");
-    result = strcat(result, dataString(myNode->data));
-    result = strcat(result, "]");
-    if(myNode->next) {
-      result = strcat(result, " -> ");
-    }
-    myNode = myNode->next;
-  }
-  return result;
 }

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "singlylinkedlist.h"
+#include "SinglyLinkedList.h"
 
 void die(const char *message)
 {
@@ -13,7 +13,7 @@ int sameInt(const void *a, const void *b) {
 }
 
 int main() {
-  struct singlylinkedlist mytestlist;
+  struct SinglyLinkedList mytestlist;
   initList(&mytestlist);
 
   int a[] =  { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
