@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "RedBlackTree.h"
+#define MAX_STRING_SIZE 1000
 
 /*
  * Exit with error message
@@ -161,8 +163,47 @@ struct RBNode *insertRBNode(struct RBT *mytree, void *value,
   return newnode;
 }
 
+struct RBNode *lookup(struct RBT *mytree, void *value,
+  int (*compar)(const void *, const void *)) {
+    struct RBNode *currentNode = mytree->root;
+    while(currentNode) {
+      int comparison = compar(value, currentNode->value);
+      if(comparison == 0)
+        return currentNode;
+      currentNode = (comparison > 0 ? currentNode->rightchild : currentNode->leftchild);
+    }
+    return NULL;
+}
+
+
 void *deleteRBNode(struct RBT *mytree, void *value,
   int (*compar)(const void *, const void *)) {
     void *n = NULL;
     return n;
+}
+
+char *RBTtoString(struct RBT *mytree, char *(*valToString)(const void *)) {
+  char *result = malloc(MAX_STRING_SIZE * sizeof(char));
+  if(mytree->root) {
+    if(mytree->root->color)
+      strcat(result, "(Black ");
+    else
+      strcat(result, "(Red ");
+    strcat(result, valToString(mytree->root->value));
+    strcat(result, " ");
+    struct RBT *leftTree = malloc(sizeof(struct RBT));
+    struct RBT *rightTree = malloc(sizeof(struct RBT));
+    initRBT(leftTree);
+    initRBT(rightTree);
+    leftTree->root = mytree->root->leftchild;
+    rightTree->root = mytree->root->rightchild;
+    strcat(result, RBTtoString(leftTree, valToString));
+    strcat(result, " ");
+    strcat(result, RBTtoString(rightTree, valToString));
+    strcat(result, ")");
+    free(leftTree);
+    free(rightTree);
+    return result;
   }
+  return "()";
+}
