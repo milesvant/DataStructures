@@ -34,11 +34,12 @@ int main()
   struct RBT testTree;
   initRBT(&testTree);
 
-  // Test insertRBNode
-  int treevals[] = { 1, 2, 3, 4, 5, 6 };
+  // Test insertRBNode and RBTtoString
+  int treevals[] = { 10, 15, 23, 7, 99, 100, 6 };
   for(int i=0; i < sizeof(treevals)/sizeof(treevals[0]); ++i) {
     if(insertRBNode(&testTree, treevals + i, &compareInt) == NULL)
       die("insertRBNode failed\n");
+    printf("%s\n", RBTtoString(&testTree, &intToString));
   }
 
   // Test lookup
@@ -49,13 +50,11 @@ int main()
       printf("Succesful lookup of %d\n", treevals[i]);
   }
   // lookup values not in the tree
-  int notintree[] = { 7, 8, 9, 10, 11 };
+  int notintree[] = { 1, 2, 3, 4, 5 };
   for(int i=0; i < sizeof(notintree)/sizeof(notintree[0]); ++i) {
     if(lookup(&testTree, notintree + i, &compareInt) != NULL)
       die("lookup failed\n");
   }
-
-  printf("%s\n", RBTtoString(&testTree, &intToString));
 
   return 0;
 }

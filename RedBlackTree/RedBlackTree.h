@@ -36,6 +36,10 @@ struct RBNode *lookup(struct RBT *mytree, void *value,
 void *deleteRBNode(struct RBT *mytree, void *value,
   int (*)(const void *, const void *));
 
+/*
+ * Returns a String representation of mytree, using valToString to create Strings
+ * for the values inside the tree.
+ */
 char *RBTtoString(struct RBT *mytree, char *(*valToString)(const void *));
 
 #endif

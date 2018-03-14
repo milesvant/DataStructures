@@ -70,28 +70,30 @@ struct RBNode *insertRBNode(struct RBT *mytree, void *value,
     struct RBNode *parent = NULL;
 
     // Naive BST insert
+    int right = 0;
     while(currentNode) {
       int comparison = compar(value, currentNode->value);
       parent = currentNode;
       if(comparison == 0)
         return NULL;
-      currentNode = (comparison > 0 ? currentNode->rightchild : currentNode->leftchild);
+      right = (comparison > 0);
+      currentNode = (right ? currentNode->rightchild : currentNode->leftchild);
     }
 
     struct RBNode *newnode = createNode(parent, value, 1);
-    if(isLeftChild(newnode))
-      parent->leftchild = newnode;
-    else
+    if(right)
       parent->rightchild = newnode;
+    else
+      parent->leftchild = newnode;
 
-    if(parent->color) // If parent's color is black, we're done
+    if(parent->color == 0) // If parent's color is black, we're done
       return newnode;
 
     // Restore Red-Black Tree property
     struct RBNode *gp = grandparent(newnode);
     struct RBNode *myuncle = uncle(newnode);
     // If newnode's uncle is black or NULL, restructure
-    if((myuncle == NULL) || (myuncle->color)) {
+    if((myuncle == NULL) || (myuncle->color == 0)) {
       int cl = isLeftChild(newnode);
       int pl = isLeftChild(parent);
       if(gp) { // Grandparent and uncle both exist
@@ -101,12 +103,20 @@ struct RBNode *insertRBNode(struct RBT *mytree, void *value,
               gp->parent->leftchild = parent;
             else
               gp->parent->rightchild = parent;
+            parent->parent = gp->parent;
           } else {
             mytree->root = parent;
+            parent->parent = NULL;
           }
           gp->leftchild = parent->rightchild;
+          parent->rightchild = gp;
+
           gp->color = 1;
           parent->color = 0;
+
+          if(parent->rightchild)
+            parent->rightchild->parent = gp;
+          gp->parent = parent;
         }
         else if(cl && (pl == 0)) { // Left child and right parent
           if(gp->parent) {
@@ -114,14 +124,22 @@ struct RBNode *insertRBNode(struct RBT *mytree, void *value,
               gp->parent->leftchild = newnode;
             else
               gp->parent->rightchild = newnode;
+            newnode->parent = gp->parent;
           } else {
             mytree->root = newnode;
+            newnode->parent = NULL;
           }
           parent->leftchild = NULL;
+          gp->rightchild = NULL;
           newnode->leftchild = gp;
           newnode->rightchild = parent;
+
           gp->color = 1;
           newnode->color = 0;
+          parent->color = 1;
+
+          parent->parent = newnode;
+          gp->parent = newnode;
         }
         else if((cl == 0) && pl) { // Right child and left parent
           if(gp->parent) {
@@ -129,14 +147,22 @@ struct RBNode *insertRBNode(struct RBT *mytree, void *value,
               gp->parent->leftchild = newnode;
             else
               gp->parent->rightchild = newnode;
+            newnode->parent = gp->parent;
           } else {
             mytree->root = newnode;
+            newnode->parent = NULL;
           }
           parent->rightchild = NULL;
+          gp->leftchild = NULL;
           newnode->leftchild = parent;
           newnode->rightchild = gp;
+
           newnode->color = 0;
           gp->color = 1;
+          parent->color = 1;
+
+          parent->parent = newnode;
+          gp->parent = newnode;
         }
         else { // Right child and right parent
           if(gp->parent) {
@@ -144,13 +170,20 @@ struct RBNode *insertRBNode(struct RBT *mytree, void *value,
               gp->parent->leftchild = parent;
             else
               gp->parent->rightchild = parent;
+            parent->parent = gp->parent;
           } else {
             mytree->root = parent;
+            parent->parent = NULL;
           }
           gp->rightchild = parent->leftchild;
           parent->leftchild = gp;
+
           gp->color = 1;
-          parent->color = 1;
+          parent->color = 0;
+
+          if(parent->leftchild)
+            parent->leftchild->parent = gp;
+          gp->parent = parent;
         }
       }
     } else { // Otherwise, recolor
@@ -170,7 +203,8 @@ struct RBNode *lookup(struct RBT *mytree, void *value,
       int comparison = compar(value, currentNode->value);
       if(comparison == 0)
         return currentNode;
-      currentNode = (comparison > 0 ? currentNode->rightchild : currentNode->leftchild);
+      currentNode =
+        (comparison > 0 ? currentNode->rightchild : currentNode->leftchild);
     }
     return NULL;
 }
@@ -186,9 +220,9 @@ char *RBTtoString(struct RBT *mytree, char *(*valToString)(const void *)) {
   char *result = malloc(MAX_STRING_SIZE * sizeof(char));
   if(mytree->root) {
     if(mytree->root->color)
-      strcat(result, "(Black ");
-    else
       strcat(result, "(Red ");
+    else
+      strcat(result, "(Black ");
     strcat(result, valToString(mytree->root->value));
     strcat(result, " ");
     struct RBT *leftTree = malloc(sizeof(struct RBT));
